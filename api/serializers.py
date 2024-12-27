@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Project, Task
+from .models import Project, Task, Comment
 
 class ProjectSerializer(serializers.ModelSerializer):
-    owner = serializers.StringRelatedField()
     class Meta:
         model = Project
         fields = (
@@ -33,8 +32,6 @@ class UserSerializer(serializers.ModelSerializer):
             self.fields['password'].required = False
 
 class TaskSerializer(serializers.ModelSerializer):
-    assign_to = serializers.StringRelatedField()
-    project= serializers.StringRelatedField()
     class Meta:
         model = Task
         fields = (
@@ -47,4 +44,15 @@ class TaskSerializer(serializers.ModelSerializer):
             'project',
             'created_at',
             'due_date'
+        )
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = (
+            'id',
+            'content',
+            'user',
+            'task',
+            'created_at'
         )

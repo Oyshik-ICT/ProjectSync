@@ -18,5 +18,15 @@ urlpatterns = [
         'put': 'update',
         'patch': 'partial_update',
         'delete': 'destroy'
-    }))
+    })),
+    path("tasks/<int:task_pk>/comments/", views.CommentViewset.as_view({
+        'get': 'list',
+        'post': 'create'
+    })),
+    path("tasks/<int:task_pk>/comments/<int:pk>/", views.CommentViewset.as_view({
+        'get': 'retrieve',
+        'put': 'update',
+        'patch': 'partial_update',
+        'delete': 'destroy'
+    })),
 ]

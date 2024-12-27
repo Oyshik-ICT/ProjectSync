@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, ProjectSerializer, TaskSerializer
+from .serializers import UserSerializer, ProjectSerializer, TaskSerializer, CommentSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.hashers import make_password
-from .models import Project, Task
+from .models import Project, Task, Comment
 
 class UserViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -53,4 +53,16 @@ class TaskViewset(viewsets.ModelViewSet):
         qs = Task.objects.select_related('assign_to', 'project').filter(project=project_id)
 
         return qs
+    
+class CommentViewset(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        task_id = self.kwargs['task_pk']
+        qs = Comment.objects.filter(task=task_id)
+
+        return qs
+
         
